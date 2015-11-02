@@ -1,0 +1,137 @@
+body {
+    overflow-x: hidden;
+    height: 100%;
+  /*background-image: url("imgs/bgImg_1080.jpg");*/
+  background-size: 100%;
+  background-color:#FFF;
+}
+
+#menubtn{
+	margin-top: 20px;
+	background-color: #3e2723;
+
+}
+
+#staggered-test li{
+	opacity: 0;
+	margin-top: 6%;
+
+}
+
+#register{
+width: 50%;
+margin-left:23%;
+
+
+
+}
+
+#welcome{
+width: 50%;
+margin-left: 25%;
+text-align: center;
+
+}
+
+.info{
+	margin-left: 25%;
+	text-align: center;
+	width: 50%;
+}
+
+.weDo{
+	margin-left:25%;
+	margin-top: 500px;
+	width: 50%;
+
+}
+.side-menu{
+	position: fixed;
+}
+
+#registerbtn{
+
+	margin-left:24%;
+
+
+}
+#buttonmenu {
+
+background-color: #3e2723;
+
+}
+#tab {
+	color: black;
+
+
+}
+
+.tabs .tab a{
+	color: black;
+
+}
+.tabs .indicator {
+background-color: black !important;
+width: 7%;
+margin-left: 9%;
+
+
+}
+
+
+.row .col{
+
+	padding:0;
+}
+.tab{
+
+	/*background-color:#808080;*/
+}
+#top{
+
+	background-color: black;
+}
+.brow{
+	background-color: black;
+}
+.jarstatus{
+	text-align: center;
+
+}
+
+#adminbar .tabs .indicator {
+background-color: black !important;
+width: 7%;
+margin-left: 13%;
+
+
+}
+#test4{
+  text-align: center;
+
+}
+#contactform{
+  margin-left: 25%;
+  width: 50%;
+}
+#cButton{
+  background-color: #3e2723;
+
+
+}
+textarea:focus {
+  color: #3e2723 !important;
+  border-bottom: 1px solid #3e2723 !important;
+  -webkit-box-shadow: 0 1px 0 0 #3e2723!important;
+  -moz-box-shadow: 0 1px 0 0 #3e2723!important;
+  box-shadow: 0 1px 0 0 #3e2723!important;
+}
+label textarea:focus{
+    color: #3e2723 !important;
+
+
+}
+textarea:focus.materialize-textarea+label{
+
+  color: #3e2723 !important;
+}

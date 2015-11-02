@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>Coffee Time!</title>
+    <link rel="stylesheet" type="text/css" href="./style/milkyStyle.css">
+    <link rel="shortcut icon" href="./style/imgs/icon.ico">
+    <!-- Testing 
+    <link rel="stylesheet" type="text/css" href="../milkyStyle.css">
+    <link rel="shortcut icon" href="../imgs/icon.ico"> -->
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/coffee2.0"><p>Coffee Project</p></a>
+        </div>
+        <div class="align-nav-buttons">
+        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-usercontrol">Usercontrol</button>
+        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-about">About</button>
+        <button onclick="window.location.href='/coffee2.0/logout.php'" type="button" class="btn btn-default navbar-btn">Logout</button>
+      </div>
+      </div>
+    </nav>
+    
+    <!-- Profile box -->
+    <div class="container">
+      <div class="positioning-profile-box panel panel-info">
+        <div class="panel-heading bigger">profile</label></div>
+          <div class="panel-body">
+            <div class="ProfileImage">
+              <input type="file" id="upload" name="upload" style="visibility: hidden; width: 1px; height: 1px" />
+              <a onclick="document.getElementById('upload').click(); return false;">
+                <img onclick="" id="file_upload" src="[/user_profile_pic\]" alt="profile-picture"> 
+                <span>change Profile Picture</span>
+              </a> 
+            </div>
+                    <label>name:&nbsp;</label>[/user_name\]</p>
+                    <label>Total consumed cups of coffee:&nbsp;</label> [/cups_consumed\]</p>
+                    <label>Money:&nbsp;</label><span class="glyphicon glyphicon-euro">[/coins\]</span></p>
+          </div>
+      </div>
+    </div>
+    
+
+
+
+<!-- usercontrol-model -->
+        <div class="modal fade" id="modal-usercontrol" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User control</h4>
+              </div>
+              <div class="modal-body">
+                <h5 class="ital bold">Creat new user</h5><br>
+                  <form role="form">
+                    <div class="form-group">
+                      <label for="username">New Username:</label>
+                      <input type="text" name="user_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="pwd">Money:</label>
+                      <input name="money" type="text" class="form-control" id="" required>
+                    </div>
+                     <div class="form-group">
+                     <label for="expiration date">expiration date:</label>
+                      <input type="datetime-local" name="expr_date" required> 
+                    </div>
+                    <button type="submit" class="btn btn-default">Create New User</button>
+                  </form>
+                <h5 class="ital bold">Users</h5>
+                <input name="Collect Users" title="Collect Users" value="CollectUsers" class="" type="submit"/><br><br>
+
+                <div class="panel panel-default">
+                  <!-- Default panel contents -->
+                  <div class="panel-heading">Panel heading</div>
+
+                  <!-- Table -->
+                  <table class="table">
+                    ...
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+
+
+    <!-- about-model -->
+        <div class="modal fade" id="modal-about" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">About Coffee Project</h4>
+              </div>
+              <div class="modal-body">
+                <p>This is a simple reservation (coffee) system.</p>
+                <p>This web app is specially made for developers who share there coffeemachine with each other.
+                So they can share the costs for producing coffee.</p>
+                <p>Made By Kevin Lorenzo Storms</p>
+                <p>Style is made by Jelle Romfield</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      <footer class="footer">
+            <div class="container">
+              <p class="text-muted">&copy; 2015 Kevin Lorenzo Storms</p>
+            </div>
+        </footer>
+    </div>  
+    <script type="text/javascript" src="./style/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./style/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/upload-min.js"></script>
+  <!-- Testing 
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+  </body>
+</html>
