@@ -30,7 +30,7 @@ class dbAUserAction extends coffee{
 			INSERT INTO usrlist 
 			(user_name, user_profile_pic, coins)
 			VALUES
-			('".$this->twoChange['name']."', 'default.png', '"$this->twoChange['money']"');
+			('".$this->twoChange['name']."', 'default.png', '".$this->twoChange['money']."');
 			INSERT INTO registration_tokens
 			(token, user_name, expiration_date) 
 			VALUES

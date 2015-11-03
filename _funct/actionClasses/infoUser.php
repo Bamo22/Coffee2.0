@@ -39,12 +39,12 @@ class infoUser extends coffee{
 
 		$usrlistRow[0]['user_profile_pic'] = $this->base64_encode_image ($cb, $ext);
 		//First  login
-		if(is_array($cups)){$cups = 0;}
+		if(is_array($cups) || is_null($cups)){$cups = 0;}
 
 		$usrlistRow[0]['cups_consumed'] = $cups;
 
 		$this->result = $usrlistRow;
-		unset($userlistRow);
+		//unset($userlistRow);
 	}
 
 	public function base64_encode_image ($filename=string,$filetype=string) {

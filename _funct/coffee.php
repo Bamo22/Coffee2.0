@@ -7,7 +7,7 @@
 session_start();
 ini_set('display_errors', 'On');
 //error_reporting(E_ALL);
-// require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/db/db_aUserAction.php');
+ require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbAUserAction.php');
 
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbDUserAction.php');
 /* Collects all Data of the logged-in user, and returns it */
