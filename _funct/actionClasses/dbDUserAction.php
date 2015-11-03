@@ -32,4 +32,7 @@ class dbDUserAction extends coffee{
     							);");
 		parent::pdoExec();
 	}
+	private function joinCoffeeSession(){
+		//test
+	}
 }
