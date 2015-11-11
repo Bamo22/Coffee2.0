@@ -13,6 +13,6 @@ define("DOMAIN", "localhost", true);
 define("TEMPLATEPATH", "/coffee2.0/style/templ/", true);
 
 //global errors
-error_reporting(0);
+error_reporting();
 
 ?>

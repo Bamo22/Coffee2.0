@@ -5,7 +5,15 @@ if(!empty($_SESSION['user']) && isset($_SESSION['user'])){
 	$getUserData = new coffee('renderTemplate');
 	echo $getUserData->rtrnAll();
 
+
+
 }else{
 	echo "<script>alert('First Login');</script>";
 	echo '<meta http-equiv="refresh" content="0; url=http://'.DOMAIN.'/coffee2.0/" />';
+}
+
+if(isset($_POST['Create New User'])){
+  $newUSer = new coffee('creat_new_user', array('user_name' => $_POST['user_name'], 'money' => $_POST['money'], 'expr_date' => $_POST['expr_date']));
+
+  echo $newUSer->rtrnAll();
 }

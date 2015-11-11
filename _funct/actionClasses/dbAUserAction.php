@@ -9,11 +9,9 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php');
 class dbAUserAction extends coffee{
 	
 	private $what;
-	private $twoChange;
 
-	function __construct($what, $twoChange){
+	function __construct($what){
 		$this->what = $what;
-		$this->twoChange = $twoChange;
 	}
 
 	private function new_coffee_session(){
@@ -21,8 +19,13 @@ class dbAUserAction extends coffee{
 	}
 	private function new_user(){
 		$key = substr( bin2hex(mcrypt_create_iv(25, MCRYPT_DEV_URANDOM)),0, 22);
-		if($this->twoChange['money'] == null || is_string($this->twoChange['money'])){
-			$this->twoChange['money'] = floatval($this->twoChange['money']);
+		parent::setQuery("SELECT id FROM `usrlist` WHERE user_name= '".parent::$prams['user_name']."';");
+		$user_name = parent::pdoExec();
+		if($user_name[0]['id'] == NULL){return "This username already exists"; exit;} else{
+			var_dump($user_name);
+		}
+		if(parent::$prams['money'] == null || is_string(parent::$prams['money'])){
+			parent::$prams['money'] = floatval(parent::$prams['money']);
 		}
 
 		parent::setQuery("
@@ -30,13 +33,13 @@ class dbAUserAction extends coffee{
 			INSERT INTO usrlist 
 			(user_name, user_profile_pic, coins)
 			VALUES
-			('".$this->twoChange['name']."', 'default.png', '".$this->twoChange['money']."');
+			('".parent::$prams['user_name']."', 'default.png', '".parent::$prams['money']."');
 			INSERT INTO registration_tokens
 			(token, user_name, expiration_date) 
 			VALUES
-			('".$key."', LAST_INSERT_ID(), '".$this->twoChange['expr_date']."');
+			('".$key."', LAST_INSERT_ID(), '".parent::$prams['expr_date']."');
 			COMMIT;");
 		parent::pdoExec();
-
+		return "<p> The registration token:".$key."</p>";
 	}
 }
