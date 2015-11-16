@@ -8,6 +8,14 @@
   * 
   */
 require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php'); 
+
+
+
+
+
+
+//if a File is beeing upload
+if(isset($_FILES)){
     //checks if there is a file received.
     if ($_FILES['file']['error'] < 0) {
         echo 'Error: ' . $_FILES['file']['error'] . '<br>';
@@ -23,5 +31,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php');
 
 		move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/coffee2.0/style/imgs/profile_pics/' . $newname);
     }
+  }
 
 ?>

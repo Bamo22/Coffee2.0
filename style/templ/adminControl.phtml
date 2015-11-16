@@ -55,20 +55,20 @@
               </div>
               <div class="modal-body">
                 <h5 class="ital bold">Creat new user</h5><br>
-                  <form role="form">
+                  <form method="post" role="form">
                     <div class="form-group">
                       <label for="username">New Username:</label>
-                      <input type="text" name="user_name" class="form-control" required>
+                      <input type="text" name="user_name" title="user_name" class="form-control" required>
                     </div>
                     <div class="form-group">
                       <label for="pwd">Money:</label>
-                      <input name="money" type="text" class="form-control" id="" required>
+                      <input name="money" title="money" type="text" class="form-control" id="" required>
                     </div>
                      <div class="form-group">
                      <label for="expiration date">expiration date:</label>
-                      <input type="datetime-local" name="expr_date" required> 
+                      <input type="datetime-local" name="expr_date" title="expr_date" required> 
                     </div>
-                    <input type="submit" class="btn btn-default" name="Create New User" title="Create New User">
+                    <input type="submit" class="btn btn-default" name="createNewUser" title="createNewUser">
                   </form>
                 <h5 class="ital bold">Users</h5>
                 <input name="Collect Users" title="Collect Users" value="CollectUsers" class="" type="submit"/><br><br>
