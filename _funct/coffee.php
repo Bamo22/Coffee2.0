@@ -112,7 +112,7 @@ class coffee{
 		    return $data;	
 
 	    } catch(PDOException $e) {
-		   //echo "<br>Error: " . $e->getMessage();
+		   echo "<br>Error: " . $e->getMessage();
 	    } 
 
     	$this->query = null;
