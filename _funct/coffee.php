@@ -7,9 +7,8 @@
 session_start();
 ini_set('display_errors', 'On');
 //error_reporting(E_ALL);
- require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbAUserAction.php');
 
- require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbDUserAction.php');
+ require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbUserAction.php');
 /* Collects all Data of the logged-in user, and returns it */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/infoUser.php');
 /* Executes the login, checks data, and validates/ renews session, sets session. */
@@ -25,36 +24,41 @@ ini_set('display_errors', 'On');
 
 class coffee{
 
-	private $_what;
-	protected $prams; 	
+	//what to execute
+	protected $what;
+	//parameters
+	protected $params; 	
 
 	private $sessCheckRes;
 
+	
+	//General result Return var 
 	private $results;
+	//set Query var
 	private $query;
 
-	function __construct($_what, $prams=null){
+	function __construct($_what, $params=null){
 		$this->_what = $_what;
-		$this->prams = $prams;
-			/*	If The user is not logedin, the default name of the session is empty.
-			 *	Guests have limited access to classes && functions, the public classes and functions are provided by the if statments.
-			 */
+		$this->params = $params;
+
 			$this->executeMain();
 	}
 
 	private function executeMain(){
+		//if not loggedin
 		if(!isset($_SESSION['user'])){
 			if($this->_what == 'login'){
-				$login = new login($this->prams);
+				$login = new login($this->params);
 				$this->results = $login->result;
 			}else if($this->_what == 'checkToken'){
-				$checkToken = new tokenCheck($this->prams);
+				$checkToken = new tokenCheck($this->params);
 				$this->results = $checkToken->result;
 			}else if($this->_what == 'register'){
-				$register = new register($this->prams);
+				$register = new register($this->params);
 				$this->results = $register->result;
 			}
 		}else{
+			//validate session before executing the rest
 			$this->checkSession();
 			
 			//1  = Default User
@@ -65,24 +69,26 @@ class coffee{
 					$this->results = $this->loadMenuTemplate($templateData->result[0], "default.phtml");
 				}
 				else if($this->_what == "change_profile_pic"){
-					$change_profile_pic = new dbDUserAction("changeProfileImage", $this->prams);
+					$change_profile_pic = new dbUserAction("changeProfileImage", $this->params);
 					$this->results = $change_profile_pic;
 				}
 
 			//2 = Admin User
 			}else if($this->sessCheckRes == "2"){
+				//render template
 				if($this->_what == "renderTemplate"){
 					$templateData = new infoUser();
 
 					$this->results = $this->loadMenuTemplate($templateData->result[0], "adminControl.phtml");
 				}
 				else if($this->_what == "change_profile_pic"){
-					$change_profile_pic = new dbDUserAction("changeProfileImage", $this->prams);
+					$change_profile_pic = new dbUserAction("changeProfileImage", $this->params);
 				}
 				else if($this->_what == "creat_new_user"){
-					$new_user = new dbAUserAction("new_user", $this->prams);
+					$new_user = new dbUserAction("new_user", $this->params);
 					$this->results = $new_user;
-			}else if($this->sessCheckRes == "ban"){
+
+				}else if($this->sessCheckRes == "ban"){
 				$this->results = "Sorry, you're banned!";
 			}else{
 				return '<meta http-equiv="refresh" content="0; url=http://'.DOMAIN.'/coffee2.0/?A=flin" />';
@@ -93,7 +99,6 @@ class coffee{
 	protected function setQuery($q){
 		$this->query = $q;
 	}
-
 
 	protected function pdoExec(){
 
@@ -112,7 +117,7 @@ class coffee{
 		    return $data;	
 
 	    } catch(PDOException $e) {
-		   echo "<br>Error: " . $e->getMessage();
+		   //echo "<br>Error: " . $e->getMessage();
 	    } 
 
     	$this->query = null;
@@ -128,11 +133,6 @@ class coffee{
 	        $this->fileFixed = str_replace("[/" . $key . "\]", $value, $this->fileFixed);
 	    }
 	    return $this->fileFixed;
-	}
-
-	//Create a log file with a occurring error
-	protected function reportError($place, $data){
-		
 	}
 
 	private function checkSession(){
@@ -154,7 +154,7 @@ class coffee{
 
 
 	public function rtrnAll(){
-				return $this->results;
+			return $this->results;
 	}	
 }
 
