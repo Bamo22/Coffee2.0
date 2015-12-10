@@ -11,7 +11,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php');
 
 class infoUser extends coffee{
 
-	protected $result;
+	public $result;
 
 	function __construct(){
 		$this->collectData();

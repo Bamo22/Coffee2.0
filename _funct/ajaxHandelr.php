@@ -9,11 +9,6 @@
   */
 require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php'); 
 
-
-
-
-
-
 //if a File is beeing upload
 if(isset($_FILES)){
     //checks if there is a file received.
@@ -27,7 +22,8 @@ if(isset($_FILES)){
     //generate a random string of 29 chars.
 		$newname = substr( bin2hex(mcrypt_create_iv(25, MCRYPT_DEV_URANDOM)),0, 25).".".$ext;
     //Updates the profile pictures filename in the database.
-		$change_profile_picture = new coffee('change_profile_pic', $newname);
+		$change_profile_picture = new coffee('changeProfileImage', $newname);
+    var_dump($change_profile_picture->rtrnAll());
 
 		move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/coffee2.0/style/imgs/profile_pics/' . $newname);
     }

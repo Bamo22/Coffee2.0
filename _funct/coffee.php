@@ -8,13 +8,14 @@ session_start();
 ini_set('display_errors', 'On');
 //error_reporting(E_ALL);
 
+/* Default Database settings / login, templatePath. */
+ require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/config.php');
+
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbUserAction.php');
 /* Collects all Data of the logged-in user, and returns it */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/infoUser.php');
 /* Executes the login, checks data, and validates/ renews session, sets session. */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/login.php');
-/* Default Database settings / login, templatePath. */
- require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/config.php');
 /* Check the registartion token, and returns an finish registration form */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/tokenCheck.php');
 
@@ -31,69 +32,62 @@ class coffee{
 
 	private $sessCheckRes;
 
+	private $userFunctions;
 	
 	//General result Return var 
 	private $results;
 	//set Query var
 	private $query;
 
-	function __construct($_what, $params=null){
-		$this->_what = $_what;
+	function __construct($what, $params=null){
+		$this->what = $what;
 		$this->params = $params;
 
-			$this->executeMain();
+		$this->process();
 	}
 
-	private function executeMain(){
+	private function process(){
 		//if not loggedin
 		if(!isset($_SESSION['user'])){
-			if($this->_what == 'login'){
+			if($this->what == 'login'){
 				$login = new login($this->params);
 				$this->results = $login->result;
-			}else if($this->_what == 'checkToken'){
+			}else if($this->what == 'checkToken'){
 				$checkToken = new tokenCheck($this->params);
-				$this->results = $checkToken->result;
-			}else if($this->_what == 'register'){
+				$this->results = $checkToken->result;	
+			}else if($this->what == 'register'){
 				$register = new register($this->params);
 				$this->results = $register->result;
 			}
 		}else{
 			//validate session before executing the rest
 			$this->checkSession();
-			
-			//1  = Default User
-			if($this->sessCheckRes == "1"){
-				if($this->_what == "renderTemplate"){
-					$templateData = new infoUser();
-
-					$this->results = $this->loadMenuTemplate($templateData->result[0], "default.phtml");
-				}
-				else if($this->_what == "change_profile_pic"){
-					$change_profile_pic = new dbUserAction("changeProfileImage", $this->params);
-					$this->results = $change_profile_pic;
-				}
-
-			//2 = Admin User
-			}else if($this->sessCheckRes == "2"){
-				//render template
-				if($this->_what == "renderTemplate"){
-					$templateData = new infoUser();
-
-					$this->results = $this->loadMenuTemplate($templateData->result[0], "adminControl.phtml");
-				}
-				else if($this->_what == "change_profile_pic"){
-					$change_profile_pic = new dbUserAction("changeProfileImage", $this->params);
-				}
-				else if($this->_what == "creat_new_user"){
-					$new_user = new dbUserAction("new_user", $this->params);
-					$this->results = $new_user;
-
-				}else if($this->sessCheckRes == "ban"){
-				$this->results = "Sorry, you're banned!";
+			$this->userFunctions = unserialize(USERFUNCTS);
+			if ($this->sessCheckRes == "1"){
+				$this->userFunctions = $this->userFunctions['default'];
+				
+			}elseif($this->sessCheckRes == "2"){
+				$this->userFunctions = $this->userFunctions['admin'];
+				
 			}else{
-				return '<meta http-equiv="refresh" content="0; url=http://'.DOMAIN.'/coffee2.0/?A=flin" />';
+				$templateData = new infoUser();
+				$this->results = $this->loadMenuTemplate($templateData->result[0], "default.phtml");
+				$this->results .= "<script>alert('Sorry, but you cannot use the application at this moment.')</script>";
+				exit();
 			}
-		}
+			try{
+				if(in_array($this->what, $this->userFunctions)){
+						//*databaseuseraction
+						$dua = new dbUserAction($this->what, $this->params);
+						$this->results = $dua->execUserAction();
+				}else{
+					return "sorry this is not possible";
+				}
+				$this->what = null;
+				$this->params = null;
+			}catch(exception $err){
+				echo $err->getMessage();
+			}
 	}
 }
 	protected function setQuery($q){
@@ -124,7 +118,7 @@ class coffee{
 		$this->connPDO = null;	
 	}
 
-	private function loadMenuTemplate($data, $template){
+	protected function loadMenuTemplate($data, $template){
 		$this->file = file_get_contents($_SERVER['DOCUMENT_ROOT'].TEMPLATEPATH.$template);
 
 	    $this->fileFixed = $this->file;
@@ -154,6 +148,7 @@ class coffee{
 
 
 	public function rtrnAll(){
+
 			return $this->results;
 	}	
 }

@@ -12,6 +12,15 @@ define("DOMAIN", "localhost", true);
 //template path
 define("TEMPLATEPATH", "/coffee2.0/style/templ/", true);
 
+//accessible admin and user functions
+define("USERFUNCTS",serialize(["admin"=>['changeProfileImage', 
+										 'renderTemplate', 
+										 'new_user', 
+										 'joinCoffeeSession'],
+							"default"=>['changeProfileImage', 
+							   			'renderTemplate', 
+							   			'joinCoffeeSession']]), true);
+
 //global errors
 error_reporting();
 
