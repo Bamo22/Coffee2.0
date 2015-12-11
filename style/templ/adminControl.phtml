@@ -14,7 +14,7 @@
           <a class="navbar-brand" href="/coffee2.0"><p>Coffee Project</p></a>
         </div>
         <div class="align-nav-buttons">
-        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-usercontrol">Usercontrol</button>
+        <button type="button" id="usercontrol" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-usercontrol">Usercontrol</button>
         <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-about">About</button>
         <button onclick="window.location.href='/coffee2.0/logout.php'" type="button" class="btn btn-default navbar-btn">Logout</button>
       </div>
@@ -22,7 +22,8 @@
     </nav>
     
     <!-- Profile box -->
-    <div class="container">
+    <div class="container extmarg">
+
       <div class="positioning-profile-box panel panel-info">
         <div class="panel-heading bigger">profile</label></div>
           <div class="panel-body">
@@ -38,7 +39,28 @@
                     <label>Money:&nbsp;</label><span class="glyphicon glyphicon-euro">[/coins\]</span></p>
           </div>
       </div>
+    
+
+
+    <!-- Profile box -->
+    <div class="sessionpanel">
+        <div class="positioning-profile-box panel panel-warning">
+          <div class="panel-heading bigger">Coffee Sessions</label></div>
+            <div class="panel-body">
+              <div class="input-group">
+                <select class="selectpicker">
+                  <option value="volvo">Volvo</option>
+                  <option value="saab">Saab</option>
+                  <option value="mercedes">Mercedes</option>
+                  <option value="audi">Audi</option>
+                </select>
+                <span class="input-group-addon" id="basic-addon2">Join</span>
+              </div>
+        </div>
+      </div>
     </div>
+
+  </div>
     
 
 
@@ -70,16 +92,12 @@
                     </div>
                     <input type="submit" class="btn btn-default" name="createNewUser" title="createNewUser">
                   </form>
+                  <br><br>
                 <h5 class="ital bold">Users</h5>
-                <input name="Collect Users" title="Collect Users" value="CollectUsers" class="" type="submit"/><br><br>
-
                 <div class="panel panel-default">
                   <!-- Default panel contents -->
                   <div class="panel-heading">Panel heading</div>
-
-                  <!-- Table -->
                   <table class="table">
-                    ...
                   </table>
                 </div>
               </div>
@@ -116,7 +134,7 @@
     </div>  
     <script type="text/javascript" src="./style/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./style/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./js/upload-min.js"></script>
+    <script type="text/javascript" src="./js/coffeeMain.js"></script>
   <!-- Testing 
     <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->

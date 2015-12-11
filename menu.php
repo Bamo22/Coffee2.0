@@ -11,5 +11,5 @@ if(!empty($_SESSION['user']) && isset($_SESSION['user'])){
 
 if(isset($_POST['createNewUser'])){
   $newUSer = new coffee('new_user', $_POST);
-  print_r($newUSer->rtrnAll());
+ echo $newUSer->rtrnAll();
 }

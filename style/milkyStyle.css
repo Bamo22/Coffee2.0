@@ -6873,6 +6873,7 @@ body {
 ----------------------------------------------*/
 .ProfileImage {
   width: 94px;
+  margin-right: 20px;
 }
 .ProfileImage span {
   visibility: hidden;
@@ -6887,7 +6888,6 @@ body {
 }
 .positioning-profile-box {
   float: left;
-  margin-top: 5%;
 }
 .positioning-profile-box img {
   position: relative;
@@ -6900,4 +6900,12 @@ body {
 .positioning-profile-box .bigger {
   font-size: 22px;
   font-weight: bold;
+}
+/* coffee session style box
+----------------------------------------------*/
+.sessionpanel {
+  margin-left: 25%;
+}
+.extmarg {
+  margin-top: 4%;
 }
