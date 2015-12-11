@@ -22,6 +22,6 @@ define("USERFUNCTS",serialize(["admin"=>['changeProfileImage',
 							   			'joinCoffeeSession']]), true);
 
 //global errors
-error_reporting();
+error_reporting(0);
 
 ?>

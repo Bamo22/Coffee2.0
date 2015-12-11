@@ -69,6 +69,6 @@ class dbUserAction extends coffee{
 				('".$key."', LAST_INSERT_ID(), '".$this->params['expr_date']."');
 			COMMIT;");
 		parent::pdoExec();
-		echo "<p> The registration token: ".$key."</p>";
+		echo "<div class='alert alert-success' role='alert'>The registration token: ".$key."</div>";
 	}
 }
