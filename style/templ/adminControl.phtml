@@ -47,12 +47,10 @@
         <div class="positioning-profile-box panel panel-warning">
           <div class="panel-heading bigger">Coffee Sessions</label></div>
             <div class="panel-body">
-              <div class="input-group">
-                <select class="selectpicker">
-                  <option value="volvo">Volvo</option>
-                  <option value="saab">Saab</option>
-                  <option value="mercedes">Mercedes</option>
-                  <option value="audi">Audi</option>
+              <div class="input-group sessionlist">
+                <select class="form-control">
+                  <option value=""></option>
+                  
                 </select>
                 <span class="input-group-addon" id="basic-addon2">Join</span>
               </div>
@@ -96,13 +94,39 @@
                 <h5 class="ital bold">Users</h5>
                 <div class="panel panel-default">
                   <!-- Default panel contents -->
-                  <div class="panel-heading">Panel heading</div>
-                  <table class="table">
+                  <table class="table table-bordered">
+                       <thead>
+                        <tr>
+                          <th>id</th>
+                          <th>username</th>
+                          <th>coins</th>
+                          <th>options</th>
+                        </tr>
+                      </thead>
+                      <tbody id="usrlist">
+                        <tr>
+                          <td>John</td>
+                          <td>Doe</td>
+                          <td>john@example.com</td>
+                          <td>July</td>
+                        </tr>
+                        <tr>
+                          <td>Mary</td>
+                          <td>Moe</td>
+                          <td>mary@example.com</td>
+                          <td>July</td>
+                        </tr>
+                        <tr>
+                          <td>July</td>
+                          <td>Dooley</td>
+                          <td>july@example.com</td>
+                          <td>July</td>
+                        </tr>
+                      </tbody>
                   </table>
-                </div>
               </div>
             </div>
-            
+            </div>
           </div>
         </div>
     <!-- about-model -->

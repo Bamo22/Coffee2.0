@@ -16,7 +16,9 @@ define("TEMPLATEPATH", "/coffee2.0/style/templ/", true);
 define("USERFUNCTS",serialize(["admin"=>['changeProfileImage', 
 										 'renderTemplate', 
 										 'new_user', 
-										 'joinCoffeeSession'],
+										 'joinCoffeeSession',
+										 'gatherAllUsers',
+										 ''],
 							"default"=>['changeProfileImage', 
 							   			'renderTemplate', 
 							   			'joinCoffeeSession']]), true);

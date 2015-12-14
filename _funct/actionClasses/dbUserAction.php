@@ -35,12 +35,14 @@ class dbUserAction extends coffee{
 							WHERE session_id = '".$_SESSION['user']."'
 							);");
 		parent::pdoExec();
-		return "ok";
 	}
 	private function joinCoffeeSession(){
 		//test
 	}
-
+	private function gatherAllUsers(){
+		parent::setQuery('SELECT `id`, `user_name`, `coins` FROM usrlist;');
+		return parent::pdoExec();
+	}
 	private function renderTemplate(){
 		$templateData = new infoUser();
 		return parent::loadMenuTemplate($templateData->result[0], "adminControl.phtml");

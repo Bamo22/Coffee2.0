@@ -28,5 +28,12 @@ if(isset($_FILES)){
 		move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/coffee2.0/style/imgs/profile_pics/' . $newname);
     }
   }
-
+  if(isset($_POST['f']) && !empty($_POST['f'])){
+    if(isset($_POST['p']) && !empty($_POST['p'])){
+      $functionTroughAjax = new coffee($_POST['f'], $_POST['p']);
+    }else{
+      $functionTroughAjax = new coffee($_POST['f']);
+    }
+    print_r(json_encode($functionTroughAjax->rtrnAll()));
+  }
 ?>

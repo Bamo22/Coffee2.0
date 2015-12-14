@@ -146,9 +146,7 @@ class coffee{
 		}
 	}
 
-
 	public function rtrnAll(){
-
 			return $this->results;
 	}	
 }
