@@ -9,8 +9,18 @@
   */
 require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php'); 
 
+if(isset($_POST['f']) && !empty($_POST['f'])){
+    if(isset($_POST['p']) && !empty($_POST['p'])){
+      $functionTroughAjax = new coffee($_POST['f'], $_POST['p']);
+    }else{
+      $functionTroughAjax = new coffee($_POST['f']);
+    }
+    print_r(json_encode($functionTroughAjax->rtrnAll()));
+  }
+
 //if a File is beeing upload
-if(isset($_FILES)){
+$_GET['f'];
+if(isset($_FILES) && $_GET['f'] == "profilePhotoUpload"){
     //checks if there is a file received.
     if ($_FILES['file']['error'] < 0) {
         echo 'Error: ' . $_FILES['file']['error'] . '<br>';
@@ -23,17 +33,8 @@ if(isset($_FILES)){
 		$newname = substr( bin2hex(mcrypt_create_iv(25, MCRYPT_DEV_URANDOM)),0, 25).".".$ext;
     //Updates the profile pictures filename in the database.
 		$change_profile_picture = new coffee('changeProfileImage', $newname);
-    var_dump($change_profile_picture->rtrnAll());
-
+    
 		move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/coffee2.0/style/imgs/profile_pics/' . $newname);
     }
-  }
-  if(isset($_POST['f']) && !empty($_POST['f'])){
-    if(isset($_POST['p']) && !empty($_POST['p'])){
-      $functionTroughAjax = new coffee($_POST['f'], $_POST['p']);
-    }else{
-      $functionTroughAjax = new coffee($_POST['f']);
-    }
-    print_r(json_encode($functionTroughAjax->rtrnAll()));
   }
 ?>

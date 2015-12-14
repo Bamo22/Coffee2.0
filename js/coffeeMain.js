@@ -6,19 +6,34 @@ $(document).ready(function(){
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
             data: {'f':'gatherAllUsers'},
             type: 'POST',
-            
             success: function(usrs) {
-               
-               // var usrsEva = eval(usrs);
-                alert(eval(toString(usrs)));
-                    for(i = 0; i < usrs.length; i++){
-                        $('#usrlist').append("<tr><td>"+usrsEva[i].id+"</td><td>"+usrsEva[i].user_name+"</td></tr>");
-                    }
-
+             try {
+                var users = JSON.parse(usrs);
+             } catch(e) {
+                console.log('error, could not parse json.')
+                console.log(usrs);
+             }
+                for(i = 0; i < users.length; i++){
+                    $('#usrlist').append("<tr><td>"+users[i].id+"</td><td>"+users[i].user_name+"</td>"+"</td><td>"+users[i].coins+"</td></tr>");
                 }
-            });
+            }
         });
+    });
 
+    $('#createCoffeeSession').click(function() {
+        var data = {'name':$('#nameSession').val(), 'maxjoins':$('#maxJoinable').val()};
+      $.ajax({
+            url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+            data: {'f':'createCoffeeSession', 'p':data},
+            type: 'POST',
+            dataType: 'json',  
+            success: function(phpResponse) {
+              console.log(phpResponse);
+              $('#nameSession').empty();
+              $('#maxJoinable').empty();
+            }
+        });
+    });
 
     $(":file").change(function () {
         if (this.files && this.files[0]) {                
@@ -33,7 +48,7 @@ $(document).ready(function(){
 
                 form_data.append("file", file_data);
                 $.ajax({
-                    url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+                    url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php?f=profilePhotoUpload",
                     data: form_data,
                     type: 'POST',
                     async: false,
@@ -42,6 +57,7 @@ $(document).ready(function(){
                     processData: false, 
                     success: function() {
                         alert("Changed!");
+                        console.log(form_data);
                     }
                 });
             } else {
@@ -61,4 +77,21 @@ $(document).ready(function(){
             return false;
         }
     }
+
+    function UpdateSessionList(){
+        $('#sessionList').empty();
+        $.ajax({
+            url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+            data: {'f':'refreshCoffeeSessions'},
+            type: 'POST',
+            dataType: 'json',  
+            success: function(sessions) {
+            
+             for(i = 0; i < sessions.length; i++){
+                    $('#sessionList').append("<option value='"+sessions[i].session_name+"'>"+sessions[i].session_name+"&nbsp"+sessions[i].joins+"/"+sessions[i].max_joins+"</option>");
+                } 
+            }
+        });
+    }
+    setInterval(function(){ UpdateSessionList() }, 5000);
 }); 

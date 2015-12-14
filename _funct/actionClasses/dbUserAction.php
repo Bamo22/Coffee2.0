@@ -73,4 +73,24 @@ class dbUserAction extends coffee{
 		parent::pdoExec();
 		echo "<div class='alert alert-success' role='alert'>The registration token: ".$key."</div>";
 	}
+	private function createCoffeeSession(){
+		if(isset($this->params['name']) && !empty($this->params['name']) && isset($this->params['maxjoins']) && !empty($this->params['maxjoins'])){
+			
+			if(!is_int($this->params['maxjoins']) || is_string($this->params['maxjoins'])){
+				$this->params['maxjoins'] = intval($this->params['maxjoins']);
+				if ($this->params['maxjoins'] > 10) {
+					$this->params['maxjoins'] = 10;
+				}
+				parent::setQuery("INSERT INTO coffee_sessions(session_name, status, joins, max_joins) VALUES ('".$this->params['name']."', 'open', '0', '".$this->params['maxjoins']."');");
+				parent::pdoExec();
+				return "added new Coffee session!";
+			}
+		}else{
+			return "Sorry not enough parameters set.";
+		}
+	}
+	private function refreshCoffeeSessions(){
+		parent::setQuery("SELECT * FROM `coffee_sessions`;");
+		return parent::pdoExec();
+	}
 }
