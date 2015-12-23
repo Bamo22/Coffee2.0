@@ -1,3 +1,4 @@
+    var debugging = {};
 $(document).ready(function(){
 
     $('#usercontrol').click(function() {
@@ -20,21 +21,50 @@ $(document).ready(function(){
         });
     });
 
+    $('#addexpense').click(function() {
+        var data = {'discrp':$('#discrp').val(), 'expense':$('#expense').val()};
+         
+            $.ajax({
+                url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+                data: {'f':'declareExpense', 'p':data},
+                type: 'POST',  
+                success: function(phpResponse) {
+                  console.log(phpResponse);
+                  $('#discrp').val(null);
+                  $('#expense').val(null);
+                  location.reload();
+                }
+        });
+    });
+
     $('#createCoffeeSession').click(function() {
         var data = {'name':$('#nameSession').val(), 'maxjoins':$('#maxJoinable').val()};
-      $.ajax({
+        $.ajax({
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
             data: {'f':'createCoffeeSession', 'p':data},
             type: 'POST',
             dataType: 'json',  
             success: function(phpResponse) {
               console.log(phpResponse);
-              $('#nameSession').empty();
-              $('#maxJoinable').empty();
+              $('#nameSession').val(null);
+              $('#maxJoinable').val(null);
+              UpdateSessionList();
             }
         });
     });
 
+    $('#join').click(function() {
+        $.ajax({
+            url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+            data: {'f':'joinCoffeeSession', 'p':$('#sessionList').find(":selected").val()},
+            type: 'POST',
+            dataType: 'json',  
+            success: function(phpResponse) {
+              console.log(phpResponse);
+              var joinedSession = $('#sessionList').find(":selected").val();
+            }
+        });
+    });
     $(":file").change(function () {
         if (this.files && this.files[0]) {                
 
@@ -65,6 +95,9 @@ $(document).ready(function(){
             }
         }
     });
+    function joinedSessionDiv(session){
+        
+    }
     function imageIsLoaded(e) {
         $('#file_upload').attr('src', e.target.result);
         $('#file_upload').fadeIn();
@@ -77,7 +110,6 @@ $(document).ready(function(){
             return false;
         }
     }
-
     function UpdateSessionList(){
         $('#sessionList').empty();
         $.ajax({
@@ -86,12 +118,30 @@ $(document).ready(function(){
             type: 'POST',
             dataType: 'json',  
             success: function(sessions) {
-            
              for(i = 0; i < sessions.length; i++){
                     $('#sessionList').append("<option value='"+sessions[i].session_name+"'>"+sessions[i].session_name+"&nbsp"+sessions[i].joins+"/"+sessions[i].max_joins+"</option>");
                 } 
             }
         });
     }
-    setInterval(function(){ UpdateSessionList() }, 5000);
-}); 
+    function checkPhpSession(){
+         $.ajax({
+            url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+            data: {'s':'o'},
+            type: 'POST',
+            dataType: 'json',  
+            success: function(sessionResponse) {
+                return sessionResponse;
+            }
+        });
+    }
+    debugging.intervalTrigger = function intervalTrigger(){ 
+        var interval = setInterval(function(){ UpdateSessionList() }, 5000);
+        if(checkPhpSession() == '0'){
+
+        }else{
+            console.log(this.checkPhpSession());
+            clearInterval(interval);
+        }
+    }
+});

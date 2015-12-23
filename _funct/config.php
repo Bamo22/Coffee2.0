@@ -19,13 +19,14 @@ define("USERFUNCTS",serialize(["admin"=>['changeProfileImage',
 										 'joinCoffeeSession',
 										 'gatherAllUsers',
 										 'createCoffeeSession',
-										 'refreshCoffeeSessions'],
+										 'refreshCoffeeSessions',
+										 'declareExpense'],
 							"default"=>['changeProfileImage', 
 							   			'renderTemplate', 
 							   			'joinCoffeeSession',
 							   			'refreshCoffeeSessions']]), true);
 
-//global errors
-error_reporting(0);
+//global error reporting
+error_reporting();
 
 ?>

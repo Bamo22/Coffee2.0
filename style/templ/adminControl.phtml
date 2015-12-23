@@ -51,20 +51,51 @@
                 <select id="sessionList" class="form-control">
                   <option value=""></option>
                   
-                </select>
-                <span class="input-group-addon" id="basic-addon2 join">Join</span>
+                </select><button>
+                <span class="input-group-addon" id="join">Join</span>
+                </button>
               </div>
         </div><div class="line"></div>
         <div class="panel-body">
         <label>make new session</label>
           <input id="nameSession" type="text" class="form-control" name="" value="" placeholder="name new coffee session">
-          <input id="maxJoinable" type="number" class="form-control" min="1" max="10" maxlength="10">
+          <input id="maxJoinable" type="number" class="form-control" min="1" max="10" maxlength="10" placeholder="Maximal joinable users">
           <button class="btn-primary btnalign" id="createCoffeeSession">create</button>
         </div>
       </div>
     </div>
-  </div>
+  
     
+    <!-- Jar box -->
+    <div class="jarbox">
+      <div class="positioning-profile-box panel panel-default">
+        <div class="panel-heading bigger">Jar</label></div>
+          <div class="panel-body">
+            <label>Total amount of money in the jar <span class="glyphicon glyphicon-piggy-bank"></span></label>
+            
+              <h1><span class="glyphicon glyphicon-euro">[/tcoins\]</span></h1>
+              <div class="line"></div>
+               <div class="panel-body">
+                <label>Declare Expense</label>
+                    <div class="form-group">
+                       <label class="col-lg-3 mrgTop">Description</label>
+                        <div class="col-lg-8">
+                          <input type="text" name="desc" id="discrp" title="description" class="form-control" required>
+                        </div>
+                      </div>
+                      <p>&nbsp;</p>
+                    <div class="form-group">
+                      <label class="col-lg-3 mrgTop">Expense</label>
+                      <div class="col-lg-8">
+                      <input name="expense" title="expense" id="expense" type="text" class="form-control" required>
+                    </div>
+                  </div>
+                  <input type="button" class="btn-primary btnalign2" id="addexpense" name="addexpense" value="add expense" title="addexpense">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -161,7 +192,7 @@
             </div>
         </footer>
     </div>  
-    <script type="text/javascript" src="./style/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./style/bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="./style/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./js/coffeeMain.js"></script>
   <!-- Testing 

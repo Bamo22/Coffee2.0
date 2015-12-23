@@ -14,17 +14,15 @@ class tokenCheck extends coffee{
 
 	function __construct($input){
 		if(empty($input)){ $this->result = "Please fill the input box";}
-			if(!strlen($input) == 25){$this->result = "not a valid Token";}
+			if(!strlen($input) < 21){$this->result = "not a valid Token";}
 		$this->submtoken = $input;
-
-		$this->search();
-		$searchres = $this->srchres;
-		//echo "<pre>";var_dump($searchres);echo "</pre>";
+		
+		$searchres = $this->search();
 		if(array($searchres) && !empty($searchres[0]['token']) && strtotime($searchres[0]['expiration_date']) > strtotime(date("Y-m-d H:i:s"))){
-			//$this->result = $this->returnRegistration($searchres[0]['user_name']);
+			$this->result = $this->returnRegistration($searchres[0]['user_name']);
 			$_SESSION['tempRegSes'] = array(strrev($searchres[0]['token']), $searchres[0]['user_name'], $this->returnRegistration($searchres[0]['user_name']));
 		}else{
-			$this->result = "This Token is not valid";
+			$this->result = $searchres;
 		}
 
 	}
@@ -33,10 +31,9 @@ class tokenCheck extends coffee{
 		parent::setQuery("SELECT * 
 			FROM `registration_tokens` 
 			JOIN `usrlist` 
-			ON registration_tokens.username = usrlist.id
-			WHERE token= ".$this->submtoken.";");
-		$this->srchres = parent::pdoExec();
-		return $this->srchres;
+			ON registration_tokens.user_name = usrlist.id
+			WHERE token= '".$this->submtoken."';");
+		return parent::pdoExec();
 	}
 	
 	private function returnRegistration($person){

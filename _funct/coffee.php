@@ -6,11 +6,10 @@
   */
 session_start();
 ini_set('display_errors', 'On');
-//error_reporting(E_ALL);
 
 /* Default Database settings / login, templatePath. */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/config.php');
-
+/* All functions that are executable by a user that is loged in. */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/dbUserAction.php');
 /* Collects all Data of the logged-in user, and returns it */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/infoUser.php');
@@ -18,19 +17,14 @@ ini_set('display_errors', 'On');
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/login.php');
 /* Check the registartion token, and returns an finish registration form */
  require_once ($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/tokenCheck.php');
-
+/* Finishing registration */
  require_once($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/actionClasses/completeRegistration.php');
 
-//echo $_SESSION['user'];
-
 class coffee{
-
 	//what to execute
 	protected $what;
 	//parameters
-	protected $params; 	
-
-	private $sessCheckRes;
+	protected $params;
 
 	private $userFunctions;
 	
@@ -39,7 +33,7 @@ class coffee{
 	//set Query var
 	private $query;
 
-	function __construct($what, $params=null){
+	function __construct($what=string, $params=null){
 		$this->what = $what;
 		$this->params = $params;
 
@@ -61,24 +55,28 @@ class coffee{
 			}
 		}else{
 			//validate session before executing the rest
-			$this->checkSession();
+			$sessCheckRes = $this->checkSession();
+			//puts all existing functions in userFunctions.
 			$this->userFunctions = unserialize(USERFUNCTS);
-			if ($this->sessCheckRes == "1"){
+			//checks privileges
+			if ($sessCheckRes == "1"){
 				$this->userFunctions = $this->userFunctions['default'];
 				
-			}elseif($this->sessCheckRes == "2"){
+			}elseif($sessCheckRes == "2"){
 				$this->userFunctions = $this->userFunctions['admin'];
-				
 			}else{
+				//If your banned or there is something wrong
 				$templateData = new infoUser();
 				$this->results = $this->loadMenuTemplate($templateData->result[0], "default.phtml");
 				$this->results .= "<script>alert('Sorry, but you cannot use the application at this moment.')</script>";
 				exit();
 			}
 			try{
+				//If function is available for user
 				if(in_array($this->what, $this->userFunctions)){
 						//*databaseuseraction
 						$dua = new dbUserAction($this->what, $this->params);
+						//execute and return
 						$this->results = $dua->execUserAction();
 				}else{
 					return "sorry this is not possible";
@@ -88,8 +86,8 @@ class coffee{
 			}catch(exception $err){
 				echo $err->getMessage();
 			}
+		}
 	}
-}
 	protected function setQuery($q){
 		$this->query = $q;
 	}
@@ -99,7 +97,7 @@ class coffee{
 		if(empty($this->query)){
 			return "Not a valid query";
 		}
-		try {
+		try{
 		    $this->connPDO = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME."", DBUSERNAME, DBPASSWD);
 		    // set the PDO error mode to exception
 		    $this->connPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -110,8 +108,8 @@ class coffee{
 		    $data = $stmt->fetchAll(); 
 		    return $data;	
 
-	    } catch(PDOException $e) {
-		   //echo "<br>Error: " . $e->getMessage();
+	    }catch(PDOException $e){
+		   	echo "<br>Error: " . $e->getMessage();
 	    } 
 
     	$this->query = null;
@@ -129,7 +127,7 @@ class coffee{
 	    return $this->fileFixed;
 	}
 
-	private function checkSession(){
+	protected function checkSession(){
 		$this->setQuery("SELECT * FROM `sessions` WHERE session_id= '".$_SESSION['user']."' LIMIT 1;");
 		$test = $this->pdoExec();
 
@@ -137,7 +135,7 @@ class coffee{
 			return "0";
 		}else{			
 			if(!empty($test[0]['person']) && strtotime($test[0]['expir_date']) > strtotime(date("Y-m-d H:i:s")) && $test[0]['priv_lvl'] != 0){
-				$this->sessCheckRes = $test[0]['priv_lvl'];
+				return $test[0]['priv_lvl'];
 			} else if($test[0]['priv_lvl'] == 0){
 				return "ban";
 			}else{

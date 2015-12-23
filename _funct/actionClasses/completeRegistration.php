@@ -32,8 +32,9 @@ class register extends coffee{
 	}
 	private function finalCheck($token){
 		$vToken = strrev($token);
-		parent::setQuery("SELECT `username` FROM `registration_tokens` WHERE `token` = ".$vToken.";");
+		parent::setQuery("SELECT `username` FROM `registration_tokens` WHERE `token` = '".$vToken."';");
 		$a = parent::pdoExec();
+		var_dump($a);
 		if(!empty($a[0]['username'])){
 			return "true";
 		}else{
@@ -42,7 +43,7 @@ class register extends coffee{
 	}
 	private function completeUserRegistartion(){
 
-		parent::setQuery("UPDATE`registration_tokens` SET `token` = null WHERE `token` =".strrev($_SESSION['tempRegSes'][0]).";");
+		parent::setQuery("UPDATE`registration_tokens` SET `token` = null WHERE `token` ='".strrev($_SESSION['tempRegSes'][0])."';");
 		parent::pdoExec();
 
 		$hands = $this->creatLoginPass();
@@ -53,7 +54,7 @@ class register extends coffee{
 		unset($_SESSION);
 		session_destroy();
 		session_unset();
-		return "success";
+		return "<script>alert('success');";
 	}
 
 	private function creatLoginPass(){

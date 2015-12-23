@@ -20,11 +20,12 @@
 			</div>
 		  </div>
 		</nav>
-
-		<div class="groupbox container">
+		<div class="container">
+			<div class="panel panel-default">
 			
 			<form method="post">
 			<label>Registration form,<br> please enter a valid registration token</label>
+			 <div class="panel-body">
 			    <div class="input-group">
 			      <input type="text" class="form-control" name="token" title="token" placeholder="Token" required>
 			      <span class="input-group-btn">
@@ -32,19 +33,22 @@
 			      </span>
 			      </form>
 			    </div><!-- /input-group -->
-			  </div><!-- /.col-lg-6 -->
-		 
-		</div>
+			  
+		
+		
 	<?php
+	//print_r($_SESSION);
 		if(isset($_POST['GO']) && !empty($_POST['token'])){
 			$regis = new coffee("checkToken", $_POST['token']);
 			echo $regis->rtrnAll();
+			header('Location: http://localhost/coffee2.0/register.php');
 		}
 		if(isset($_POST['register'])){
 			if(isset($_POST['passw1']) && isset($_POST['passw2'])){
-				if($_POST['passw1'] == $_POST['passw2']){
+				if($_POST['passw1'] === $_POST['passw2']){
 					$complReg = new coffee("register", array($_POST['passw1'], $_POST['passw2']));
-					echo $complReg->rtrnAll();
+					var_dump($complReg->rtrnAll());
+					header('Location: http://localhost/coffee2.0/register.php');
 				}else{
 					echo "the passwords do not match";
 				}
@@ -54,6 +58,9 @@
 			echo $_SESSION['tempRegSes'][2];
 		}
 	?>
+	</div><!-- /.col-lg-6 -->
+	 </div>
+	</div>
 	<!-- about-model -->
 			  <div class="modal fade" id="modal-about" role="dialog">
 			    <div class="modal-dialog">

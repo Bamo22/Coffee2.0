@@ -17,9 +17,16 @@ if(isset($_POST['f']) && !empty($_POST['f'])){
     }
     print_r(json_encode($functionTroughAjax->rtrnAll()));
   }
+  if(isset($_POST['s'])){
+    if(!isset($_SESSION['coffeeSession']) || empty($_SESSION['coffeeSession'])){
+      echo json_encode('0');
+    }else{
+      echo json_encode("chickes");
+    }
+  }
 
 //if a File is beeing upload
-$_GET['f'];
+$_GET['f'] = null;
 if(isset($_FILES) && $_GET['f'] == "profilePhotoUpload"){
     //checks if there is a file received.
     if ($_FILES['file']['error'] < 0) {

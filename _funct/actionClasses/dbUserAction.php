@@ -10,8 +10,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php');
 class dbUserAction extends coffee{
 
 
-	function __construct($what, $params){
-
+	function __construct($what, $params){ 
 		$this->what = $what;
 		$this->params = $params;
 	}
@@ -36,17 +35,47 @@ class dbUserAction extends coffee{
 							);");
 		parent::pdoExec();
 	}
+	private function declareExpense(){
+		parent::setQuery('SELECT COUNT(coins) FROM `usrlist`;');
+		$totalAmountJar = parent::pdoExec();
+		$expense = $this->params['expense'] / $totalAmountJar[0][0];
+
+		parent::setQuery("UPDATE `usrlist` SET coins=coins-".$expense.";");
+		parent::pdoExec();
+		parent::setQuery("INSERT INTO `expense_transactions` (total_amount, description) VALUES ('".$this->params['expense']."', '".$this->params['discrp']."');");
+		parent::pdoExec();
+		return "SUCCESS!";
+	}
 	private function joinCoffeeSession(){
-		//test
+		parent::setQuery("SELECT * FROM coffee_sessions WHERE session_name= '".$this->params."';");
+		$session = parent::pdoExec();
+
+		if($session[0]['joins'] < $session[0]['max_joins'] && $session[0]['joins'] != $session[0]['max_joins']){
+			parent::setQuery("INSERT INTO coffee_session_candidates	 
+							(session_id, user_name, cups_consumed) 
+							SELECT '".$session[0]['session_id']."', user_name, 0 FROM `usrlist`
+								WHERE id IN (
+								SELECT person
+    							FROM `sessions`
+    							WHERE session_id = '".$_SESSION['user']."');");
+			parent::pdoExec();
+			return "JOINED!";
+		}else{
+			return "Sorry, Coffee session is full!";
+		}
+
 	}
 	private function gatherAllUsers(){
 		parent::setQuery('SELECT `id`, `user_name`, `coins` FROM usrlist;');
 		return parent::pdoExec();
 	}
 	private function renderTemplate(){
-		$templateData = new infoUser();
-		return parent::loadMenuTemplate($templateData->result[0], "adminControl.phtml");
-				
+		$templateData = new infoUser();	
+		if(parent::checkSession() == 1){
+			return parent::loadMenuTemplate($templateData->result[0], "default.phtml");	
+		}else if (parent::checkSession() == 2) {
+			return parent::loadMenuTemplate($templateData->result[0], "adminControl.phtml");
+		}
 	}
 
 	private function new_user(){
