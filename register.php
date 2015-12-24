@@ -37,7 +37,7 @@
 		
 		
 	<?php
-	//print_r($_SESSION);
+	///print_r($_SESSION);
 		if(isset($_POST['GO']) && !empty($_POST['token'])){
 			$regis = new coffee("checkToken", $_POST['token']);
 			echo $regis->rtrnAll();
@@ -45,10 +45,10 @@
 		}
 		if(isset($_POST['register'])){
 			if(isset($_POST['passw1']) && isset($_POST['passw2'])){
-				if($_POST['passw1'] === $_POST['passw2']){
+				if($_POST['passw1'] == $_POST['passw2']){
 					$complReg = new coffee("register", array($_POST['passw1'], $_POST['passw2']));
-					var_dump($complReg->rtrnAll());
-					header('Location: http://localhost/coffee2.0/register.php');
+					echo "<script>alert('registered successfully!');</script>";
+					header('Location: http://localhost/coffee2.0');
 				}else{
 					echo "the passwords do not match";
 				}

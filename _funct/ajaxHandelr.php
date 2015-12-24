@@ -19,9 +19,9 @@ if(isset($_POST['f']) && !empty($_POST['f'])){
   }
   if(isset($_POST['s'])){
     if(!isset($_SESSION['coffeeSession']) || empty($_SESSION['coffeeSession'])){
-      echo json_encode('0');
+      echo '06';
     }else{
-      echo json_encode("chickes");
+      echo $_SESSION['coffeeSession'];
     }
   }
 

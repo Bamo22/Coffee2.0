@@ -104,8 +104,9 @@ class coffee{
 		    // prepare sql and bind parameters
 		    $stmt = $this->connPDO->prepare($this->query);
 			$stmt->execute();
-
-		    $data = $stmt->fetchAll(); 
+			if(!strpos($this->query, "UPDATE") || !strpos($this->query, "INSERT")){
+				$data = $stmt->fetchAll(); 
+			}
 		    return $data;	
 
 	    }catch(PDOException $e){

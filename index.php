@@ -28,7 +28,6 @@
 			</div>
 		  </div>
 		</nav>
-		
 		<?php 
 			if(isset($_SESSION['user'])){
 				echo $_SESSION['user'];

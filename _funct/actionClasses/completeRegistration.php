@@ -9,6 +9,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/coffee2.0/_funct/coffee.php');
 class register extends coffee{
 
 	protected $result;
+	private $userID;
 
 	private $newPasswrds;
 
@@ -19,12 +20,7 @@ class register extends coffee{
 		if(!empty($_SESSION['tempRegSes'][0])){
 			$lastcheck = $this->finalCheck($_SESSION['tempRegSes'][0]);
 			if($lastcheck == "true"){
-				$complete = $this->completeUserRegistartion();
-				if($complete == "success"){
-					$this->result = "Registation Complete!!!";
-				}else{
-					return "Error";
-				}
+				return $this->completeUserRegistartion();
 			}else{
 				return "Error";
 			}
@@ -32,10 +28,10 @@ class register extends coffee{
 	}
 	private function finalCheck($token){
 		$vToken = strrev($token);
-		parent::setQuery("SELECT `username` FROM `registration_tokens` WHERE `token` = '".$vToken."';");
+		parent::setQuery("SELECT `user_name` FROM `registration_tokens` WHERE `token` = '".$vToken."';");
 		$a = parent::pdoExec();
-		var_dump($a);
-		if(!empty($a[0]['username'])){
+		$this->userID = $a[0]['user_name'];
+		if(!empty($this->userID)){
 			return "true";
 		}else{
 			return "false";
@@ -43,12 +39,19 @@ class register extends coffee{
 	}
 	private function completeUserRegistartion(){
 
-		parent::setQuery("UPDATE`registration_tokens` SET `token` = null WHERE `token` ='".strrev($_SESSION['tempRegSes'][0])."';");
+		parent::setQuery("DELETE FROM `registration_tokens` WHERE `token` ='".strrev($_SESSION['tempRegSes'][0])."';");
 		parent::pdoExec();
 
 		$hands = $this->creatLoginPass();
 
 		parent::setQuery("UPDATE `usrlist` SET user_hash = '".$hands['h']."', user_salt='".$hands['s']."' WHERE user_name= '".$_SESSION['tempRegSes'][1]."';");
+		parent::pdoExec();
+
+		$newHash = substr(bin2hex(mcrypt_create_iv(14, MCRYPT_DEV_URANDOM)), 0, 13);
+
+		$newExpirData = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60));
+		//echo "UPDATE `sessions` SET `session_id` = '".$newHash."', `expir_date` = '".$newExpirData."' WHERE `person` = '".$this->sqlResults['login'][0]['id']."';";
+		parent::setQuery("INSERT INTO `sessions` (session_id, person, expir_date, priv_lvl) VALUES ('".$newHash."', '".$this->userID."', '".$newExpirData."', 1);");
 		parent::pdoExec();
 
 		unset($_SESSION);

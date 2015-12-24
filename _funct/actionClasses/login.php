@@ -39,7 +39,8 @@ class login extends coffee{
 				$this->updateLatestLogin();
 				$this->result = '<meta http-equiv="refresh" content="0; url=http://'.DOMAIN.'/coffee2.0/menu.php" />';
 			}else{
-				$this->result = 'Wrong username / password';
+				$this->result = '<div class="loginError alert alert-danger"><b>Wrong username / password!</b></div>
+									<meta http-equiv="refresh" content="5; url=http://'.DOMAIN.'/coffee2.0/" />';
 			}
 
 	}

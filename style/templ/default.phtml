@@ -14,15 +14,14 @@
           <a class="navbar-brand" href="/coffee2.0"><p>Coffee Project</p></a>
         </div>
         <div class="align-nav-buttons">
-        <button onclick="window.location.href='/coffee2.0/logout.php'" type="button" class="btn btn-default navbar-btn">Logout</button>
-        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-about">About</button>
-
-      </div>
+          <button onclick="window.location.href='/coffee2.0/logout.php'" type="button" class="btn btn-default navbar-btn">Logout</button>
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#modal-about">About</button>
+        </div>
       </div>
     </nav>
     
     <!-- Profile box -->
-    <div class="container">
+    <div class="container extmarg">
       <div class="positioning-profile-box panel panel-info">
         <div class="panel-heading bigger">profile</label></div>
           <div class="panel-body">
@@ -38,11 +37,38 @@
                     <label>Money:&nbsp;</label><span class="glyphicon glyphicon-euro">[/coins\]</span></p>
           </div>
       </div>
-    </div>
     
+ <!-- coffee_session box -->
+    <div class="sessionpanel">
+        <div class="positioning-profile-box panel panel-warning">
+          <div class="panel-heading bigger">Coffee Sessions</label></div>
+            <div class="panel-body">
+            <label>existing sessions</label>
+              <div class="input-group sessionlist">
+                <select id="sessionList" class="form-control">
+                  <option value=""></option>
+                  
+                </select><button>
+                <span class="input-group-addon" id="join">Join</span>
+                </button>
+              </div>
+          </div>
+        </div>
+      </div>
 
-
-
+<!-- Jar box -->
+    <div class="jarbox">
+      <div class="positioning-profile-box panel panel-default">
+        <div class="panel-heading bigger">Jar</label></div>
+          <div class="panel-body">
+            <label>Total amount of money in the jar <span class="glyphicon glyphicon-piggy-bank"></span></label>
+            
+              <h1><span class="glyphicon glyphicon-euro">[/tcoins\]</span></h1>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 

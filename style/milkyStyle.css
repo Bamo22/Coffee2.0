@@ -6736,6 +6736,10 @@ label,
 a {
   color: #BFAF80;
 }
+.loginError {
+  max-width: 230px;
+  float: right;
+}
 .btn {
   background-color: #8C6954;
   border-color: #8C6954;

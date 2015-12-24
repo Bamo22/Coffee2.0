@@ -1,5 +1,5 @@
-    var debugging = {};
 $(document).ready(function(){
+    intervalTrigger();
 
     $('#usercontrol').click(function() {
         $('#usrlist').empty();
@@ -95,9 +95,7 @@ $(document).ready(function(){
             }
         }
     });
-    function joinedSessionDiv(session){
-        
-    }
+   
     function imageIsLoaded(e) {
         $('#file_upload').attr('src', e.target.result);
         $('#file_upload').fadeIn();
@@ -110,7 +108,8 @@ $(document).ready(function(){
             return false;
         }
     }
-    function UpdateSessionList(){
+});
+     function UpdateSessionList(){
         $('#sessionList').empty();
         $.ajax({
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
@@ -124,24 +123,24 @@ $(document).ready(function(){
             }
         });
     }
+
     function checkPhpSession(){
          $.ajax({
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
             data: {'s':'o'},
             type: 'POST',
-            dataType: 'json',  
             success: function(sessionResponse) {
-                return sessionResponse;
+                var sample = "06";
+                return sample;
             }
         });
     }
-    debugging.intervalTrigger = function intervalTrigger(){ 
+    function intervalTrigger(){ 
         var interval = setInterval(function(){ UpdateSessionList() }, 5000);
-        if(checkPhpSession() == '0'){
-
+        if(checkPhpSession() == '06'){
+            alert("yas");
         }else{
-            console.log(this.checkPhpSession());
-            clearInterval(interval);
+            console.log(checkPhpSession());
+            //clearInterval(interval);
         }
     }
-});
