@@ -44,26 +44,40 @@ class dbUserAction extends coffee{
 		parent::pdoExec();
 		parent::setQuery("INSERT INTO `expense_transactions` (total_amount, description) VALUES ('".$this->params['expense']."', '".$this->params['discrp']."');");
 		parent::pdoExec();
-		return "SUCCESS!";
+		return "Proceed!";
 	}
 	private function joinCoffeeSession(){
-		parent::setQuery("SELECT * FROM coffee_sessions WHERE session_name= '".$this->params."';");
-		$session = parent::pdoExec();
+		if(empty($_SESSION['coffeeSession'])){
+		
+			parent::setQuery("SELECT * FROM coffee_sessions WHERE session_name= '".$this->params."' LIMIT 1;");
+			$cSession = parent::pdoExec();
 
-		if($session[0]['joins'] < $session[0]['max_joins'] && $session[0]['joins'] != $session[0]['max_joins']){
-			parent::setQuery("INSERT INTO coffee_session_candidates	 
-							(session_id, user_name, cups_consumed) 
-							SELECT '".$session[0]['session_id']."', user_name, 0 FROM `usrlist`
-								WHERE id IN (
-								SELECT person
-    							FROM `sessions`
-    							WHERE session_id = '".$_SESSION['user']."');");
-			parent::pdoExec();
-			return "JOINED!";
+			if($cSession[0]['joins'] < $cSession[0]['max_joins'] || $cSession[0]['joins'] != $cSession[0]['max_joins']){
+				parent::setQuery("INSERT INTO coffee_session_candidates	 
+								(session_id, user_name, cups_consumed) 
+								SELECT '".$cSession[0]['session_id']."', user_name, 0 FROM `usrlist`
+									WHERE id IN (
+									SELECT person
+	    							FROM `sessions`
+	    							WHERE session_id = '".$_SESSION['user']."');");
+				parent::pdoExec();
+				parent::setQuery("UPDATE `coffee_sessions` SET joins= joins + 1 WHERE session_name= '".$this->params."';");
+				parent::pdoExec();
+				$_SESSION['coffeeSession'] = $cSession[0]['session_id'];
+				return "JOINED!";
+				
 		}else{
 			return "Sorry, Coffee session is full!";
 		}
-
+	}
+}
+	private function gatherSessionGroupDetails(){
+		parent::setQuery("SELECT * FROM `coffee_sessions` WHERE session_id= '".$_SESSION['coffeeSession']."';");
+		$ecvar = parent::pdoExec();
+		$groupDetails['csess'] = $ecvar[0];
+		parent::setQuery("SELECT * FROM `coffee_session_candidates` WHERE session_id= '".$_SESSION['coffeeSession']."';");
+		$groupDetails['csessc'] = parent::pdoExec();
+		return $groupDetails;
 	}
 	private function gatherAllUsers(){
 		parent::setQuery('SELECT `id`, `user_name`, `coins` FROM usrlist;');
@@ -103,21 +117,26 @@ class dbUserAction extends coffee{
 		echo "<div class='alert alert-success' role='alert'>The registration token: ".$key."</div>";
 	}
 	private function createCoffeeSession(){
-		if(isset($this->params['name']) && !empty($this->params['name']) && isset($this->params['maxjoins']) && !empty($this->params['maxjoins'])){
-			
-			if(!is_int($this->params['maxjoins']) || is_string($this->params['maxjoins'])){
-				$this->params['maxjoins'] = intval($this->params['maxjoins']);
-				if ($this->params['maxjoins'] > 10) {
-					$this->params['maxjoins'] = 10;
+		parent::setQuery("SELECT `session_id` FROM `coffee_sessions` WHERE session_name= '".$this->prarams['name']."' LIMIT 1;");
+		$sessId = parent::pdoExec();
+		if(!empty($sessId[0]['session_id']) || is_null($sessId[0]['session_id'])){
+			return "Sorry this name is already given to a session!";
+		}else{
+			if(isset($this->params['name']) && !empty($this->params['name']) || isset($this->params['maxjoins']) && !empty($this->params['maxjoins'])){
+				if(!is_int($this->params['maxjoins']) || is_string($this->params['maxjoins'])){
+					$this->params['maxjoins'] = intval($this->params['maxjoins']);
+					if ($this->params['maxjoins'] > 10) {
+						$this->params['maxjoins'] = 10;
+					}
+					parent::setQuery("INSERT INTO `coffee_sessions` (session_name, status, joins, max_joins) VALUES ('".$this->params['name']."', 'open', '0', '".$this->params['maxjoins']."');");
+					parent::pdoExec();
+					return "added new Coffee session!";
 				}
-				parent::setQuery("INSERT INTO coffee_sessions(session_name, status, joins, max_joins) VALUES ('".$this->params['name']."', 'open', '0', '".$this->params['maxjoins']."');");
-				parent::pdoExec();
-				return "added new Coffee session!";
-			}
 		}else{
 			return "Sorry not enough parameters set.";
 		}
 	}
+}
 	private function refreshCoffeeSessions(){
 		parent::setQuery("SELECT * FROM `coffee_sessions`;");
 		return parent::pdoExec();

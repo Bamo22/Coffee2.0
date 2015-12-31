@@ -106,9 +106,8 @@ class coffee{
 			$stmt->execute();
 			if(!strpos($this->query, "UPDATE") || !strpos($this->query, "INSERT")){
 				$data = $stmt->fetchAll(); 
+				return $data;
 			}
-		    return $data;	
-
 	    }catch(PDOException $e){
 		   	echo "<br>Error: " . $e->getMessage();
 	    } 

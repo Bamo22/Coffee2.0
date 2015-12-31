@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    intervalTrigger();
+    checkPhpSession();
 
     $('#usercontrol').click(function() {
         $('#usrlist').empty();
@@ -57,11 +57,11 @@ $(document).ready(function(){
         $.ajax({
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
             data: {'f':'joinCoffeeSession', 'p':$('#sessionList').find(":selected").val()},
-            type: 'POST',
-            dataType: 'json',  
-            success: function(phpResponse) {
-              console.log(phpResponse);
-              var joinedSession = $('#sessionList').find(":selected").val();
+            type: 'POST', 
+            success: function(phpResponse){
+                
+                console.log(phpResponse);
+                checkPhpSession();
             }
         });
     });
@@ -130,17 +130,28 @@ $(document).ready(function(){
             data: {'s':'o'},
             type: 'POST',
             success: function(sessionResponse) {
-                var sample = "06";
-                return sample;
+                var interval = setInterval(function(){ UpdateSessionList() }, 5000);
+                if(sessionResponse != '06'){
+                    clearInterval(interval);
+                    loadCurrentSession();
+                }else{
+                    //Nothing;
+                }
             }
         });
     }
-    function intervalTrigger(){ 
-        var interval = setInterval(function(){ UpdateSessionList() }, 5000);
-        if(checkPhpSession() == '06'){
-            alert("yas");
-        }else{
-            console.log(checkPhpSession());
-            //clearInterval(interval);
-        }
-    }
+     function loadCurrentSession(){
+        $('#cSessionContent').empty();
+        $.ajax({
+            url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
+            data: {'f':'gatherSessionGroupDetails'},
+            type: 'POST',
+            dataType: 'json',
+            success: function(cSessionData){
+                $('#cSessionContent').append('<label>Session Name:'+cSessionData.csess["session_name"]+'</label><br><label>Status: '+cSessionData.csess["status"]+'</label><div class="sessionDetails"></div><br><label>Total user joined: '+cSessionData.csess["joins"]+' / '+cSessionData.csess["max_joins"]+'</label>');
+                for(i = 0; i < cSessionData.csessc.length; i++){
+                    $('.sessionDetails').append('<tr><td>'+cSessionData.csessc[i]["user_name"]+'</td></tr>');
+                } 
+            }
+        });
+     }

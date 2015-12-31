@@ -4,10 +4,10 @@
 define("DBNAME", "coffee", true);
 define("DBHOST", "localhost", true);
 define("DBUSERNAME", "root", true);
-define("DBPASSWD", "", true);
+define("DBPASSWD", "0>cB3mF13", true);
 
 //domain
-define("DOMAIN", "localhost", true);
+define("DOMAIN", "klst.uk", true);
 
 //template path
 define("TEMPLATEPATH", "/coffee2.0/style/templ/", true);
@@ -19,16 +19,13 @@ define("USERFUNCTS",serialize(["admin"=>['changeProfileImage',
 										 'joinCoffeeSession',
 										 'gatherAllUsers',
 										 'createCoffeeSession',
-										 'refreshCoffeeSessions',
-										 'declareExpense',
-										 'gatherSessionGroupDetails'],
+										 'refreshCoffeeSessions'],
 							"default"=>['changeProfileImage', 
 							   			'renderTemplate', 
 							   			'joinCoffeeSession',
-							   			'refreshCoffeeSessions',
-							   			'gatherSessionGroupDetails']]), true);
+							   			'refreshCoffeeSessions']]), true);
 
-//global error reporting
+//global errors
 error_reporting();
 
 ?>
