@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    UpdateSessionList();
     checkPhpSession();
 
     $('#usercontrol').click(function() {
@@ -59,7 +60,6 @@ $(document).ready(function(){
             data: {'f':'joinCoffeeSession', 'p':$('#sessionList').find(":selected").val()},
             type: 'POST', 
             success: function(phpResponse){
-                
                 console.log(phpResponse);
                 checkPhpSession();
             }
@@ -125,12 +125,12 @@ $(document).ready(function(){
     }
 
     function checkPhpSession(){
+        var interval = setInterval(function(){ UpdateSessionList() }, 5000);
          $.ajax({
             url: "http://localhost/coffee2.0/_funct/ajaxHandelr.php",
             data: {'s':'o'},
             type: 'POST',
             success: function(sessionResponse) {
-                var interval = setInterval(function(){ UpdateSessionList() }, 5000);
                 if(sessionResponse != '06'){
                     clearInterval(interval);
                     loadCurrentSession();

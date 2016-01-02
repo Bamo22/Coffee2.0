@@ -138,6 +138,17 @@ class dbUserAction extends coffee{
 	}
 }
 	private function refreshCoffeeSessions(){
+		parent::setQuery("SELECT `session_id` 
+						    FROM `coffee_session_candidates` 
+						        WHERE user_name IN (
+						            SELECT user_name 
+						                FROM `usrlist` 
+						                    WHERE id IN ( 
+						                        SELECT person FROM `sessions` WHERE session_id = '".$_SESSION['user']."')) LIMIT 1");
+		$availableCoffeeSession = parent::pdoExec();
+		if(!empty($availableCoffeeSession[0]['session_id'])){
+			$_SESSION['coffeeSession'] = $availableCoffeeSession[0]['session_id'];
+		}
 		parent::setQuery("SELECT * FROM `coffee_sessions`;");
 		return parent::pdoExec();
 	}
